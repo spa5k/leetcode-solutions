@@ -1,0 +1,43 @@
+name: LeetCode Export
+
+on:
+  schedule:
+    # Run the workflow every 12 hours
+    - cron: "0 */12 * * *"
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  export-leetcode-submissions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install leetcode-export
+        run: pip install leetcode-export
+
+      - name: Export LeetCode submissions
+        run: |
+          mkdir -p submissions
+          python -m leetcode_export --cookies ${{ secrets.LEETCODE_COOKIES }}
+        env:
+          LEETCODE_COOKIES: ${{ secrets.LEETCODE_COOKIES }}
+
+      - name: Commit and push submissions
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add submissions
+          git commit -m 'Update LeetCode submissions'
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
