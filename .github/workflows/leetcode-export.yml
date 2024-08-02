@@ -30,12 +30,13 @@ jobs:
 
       - name: Export LeetCode submissions
         run: |
-          expect -c "
-          spawn python -m leetcode_export
-          expect \"Insert LeetCode cookies:\"
-          send \"${{ secrets.LEETCODE_COOKIES }}\r\"
-          interact
-          "
+          echo '#!/usr/bin/expect' > leetcode-export-script.exp
+          echo 'spawn python -m leetcode_export' >> leetcode-export-script.exp
+          echo 'expect "Cookies:"' >> leetcode-export-script.exp
+          echo 'send "${{ secrets.LEETCODE_COOKIES }}\r"' >> leetcode-export-script.exp
+          echo 'interact' >> leetcode-export-script.exp
+          chmod +x leetcode-export-script.exp
+          ./leetcode-export-script.exp
 
       - name: Commit and push submissions
         run: |
