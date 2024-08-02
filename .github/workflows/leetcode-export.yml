@@ -25,12 +25,17 @@ jobs:
       - name: Install leetcode-export
         run: pip install leetcode-export
 
+      - name: Install expect
+        run: sudo apt-get install -y expect
+
       - name: Export LeetCode submissions
         run: |
-          mkdir -p submissions
-          python -m leetcode_export --cookies ${{ secrets.LEETCODE_COOKIES }}
-        env:
-          LEETCODE_COOKIES: ${{ secrets.LEETCODE_COOKIES }}
+          expect -c "
+          spawn python -m leetcode_export
+          expect \"Insert LeetCode cookies:\"
+          send \"${{ secrets.LEETCODE_COOKIES }}\r\"
+          interact
+          "
 
       - name: Commit and push submissions
         run: |
