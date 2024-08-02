@@ -28,7 +28,7 @@ jobs:
         run: ls -la
 
       - name: Run export script
-        run: python export_leetcode.py
+        run: python export-leetcode.py
         env:
           LEETCODE_COOKIES: ${{ secrets.LEETCODE_COOKIES }}
 
