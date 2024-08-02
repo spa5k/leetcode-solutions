@@ -7,7 +7,7 @@ def run_leetcode_export():
         raise ValueError("LeetCode cookies not found in environment variables")
 
     process = subprocess.Popen(
-        ["leetcode-export"],
+        ["leetcode-export", "--only-accepted"],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
