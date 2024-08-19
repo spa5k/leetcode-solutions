@@ -27,11 +27,8 @@ jobs:
       - name: Install leetcode-export
         run: pip install leetcode-export
 
-      - name: Print the directory structure ignore git
-        run: ls -la
-
       - name: Run export script
-        run: python export-leetcode.py
+        run: leetcode-export --cookies "$LEETCODE_COOKIES" --only-accepted
         env:
           LEETCODE_COOKIES: ${{ secrets.LEETCODE_COOKIES }}
 
